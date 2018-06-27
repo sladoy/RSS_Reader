@@ -15,6 +15,7 @@ class MainGUI:
         self.show_more_button = Button(root, text='Show more about')
         self.show_more_button.pack()
         self.data_label = Label(root)
+        self.data_label.pack()
         self.url = 0
 
     def start(self):

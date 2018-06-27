@@ -11,4 +11,3 @@ class RSS:
             a[entry.title] = entry.link
 
         return a
-
