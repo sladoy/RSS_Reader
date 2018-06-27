@@ -4,7 +4,6 @@ from Reader import RSS
 
 class MainGUI:
     def __init__(self, root):
-        super().__init__()
         self.root = root
         self.label = Label(root, text='Wprowadz link RSS')
         self.label.pack()
