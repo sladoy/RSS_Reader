@@ -21,6 +21,7 @@ class MainGUI:
     def start(self):
         self.url = RSS(self.entry.get())
         positions = self.url.show_titles()
+        print(self.url)
 
         for x, y in positions.items():
             print(x + '\t link: ' + y)
