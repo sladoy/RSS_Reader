@@ -10,4 +10,4 @@ informacje o pozycjach
 '''
 
 reader = RSS('http://www.reddit.com/r/python/.rss')
-reader.show_titles()
+reader.show_title_and_link()
