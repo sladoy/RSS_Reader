@@ -1,6 +1,13 @@
-from tkinter import Tk, Entry, Label, Button, ttk
-from Reader import RSS
 import webbrowser
+from tkinter import Tk, Entry, Label, Button, ttk
+from show_more_window import ShowMore
+from Reader import RSS
+
+'''
+Wiecej informacji o danej pozycji, kiedy byla ostatnio aktualizowana, etc
+
+RSS: https://www.reddit.com/r/python/.rss
+'''
 
 
 class MainGUI:
@@ -16,7 +23,10 @@ class MainGUI:
         self.start_button = Button(root, text='Start', command=self.start)
         self.start_button.pack()
 
-        self.show_more_button = Button(root, text='Open', command=self.show)
+        self.open_in_browser_button = Button(root, text='Open', command=self.open_in_browser)
+        self.open_in_browser_button.pack()
+
+        self.show_more_button = Button(root, text='Show more', command=self.show_more)
         self.show_more_button.pack()
 
         self.tree = ttk.Treeview(self.root, columns=[1, 2], height=10, show='headings')
@@ -44,7 +54,10 @@ class MainGUI:
 
         frame.mainloop()
 
+    def show_more(self):
+        pass
     def start(self):
+
         self.url = RSS(self.entry.get())
         positions = self.url.show_title_and_link()
         for x, y in positions.items():
@@ -53,14 +66,15 @@ class MainGUI:
         for value in self.value_list:
             self.tree.insert('', 'end', values=(value[0], value[1]))
 
-    def show(self):
-        try:
-            value = self.tree.focus()
-            url = self.tree.item(value)['values'][1]
-        except IndexError:
-            self.error_window()
-        else:
-            webbrowser.open_new_tab(url)
+    def open_in_browser(self):
+        table = []
+
+        values = self.tree.selection()
+        for value in values:
+            table.append(self.tree.item(value)['values'][1])
+
+        for element in table:
+            webbrowser.open_new_tab(element)
 
 
 if __name__ == '__main__':

@@ -6,8 +6,19 @@ class RSS:
         self.url = feedparser.parse(url)
 
     def show_title_and_link(self):
-        a = {}
+        value_dict = {}
         for entry in self.url.entries:
-            a[entry.title] = entry.link
+            value_dict[entry.title] = entry.link
 
-        return a
+        return value_dict
+
+    def show_more_details(self):
+        value_list = []
+        for entry in self.url.entries:
+            value_list.append([entry.updated, entry.author, entry.title])
+
+        return value_list
+
+
+f = RSS('https://www.reddit.com/r/python/.rss')
+f.show_more_details()
