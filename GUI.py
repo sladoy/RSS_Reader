@@ -56,8 +56,8 @@ class MainGUI:
 
     def show_more(self):
         pass
-    def start(self):
 
+    def start(self):
         self.url = RSS(self.entry.get())
         positions = self.url.show_title_and_link()
         for x, y in positions.items():
@@ -68,13 +68,15 @@ class MainGUI:
 
     def open_in_browser(self):
         table = []
-
         values = self.tree.selection()
-        for value in values:
-            table.append(self.tree.item(value)['values'][1])
+        if len(values) == 0:
+            self.error_window()
+        else:
+            for value in values:
+                table.append(self.tree.item(value)['values'][1])
 
-        for element in table:
-            webbrowser.open_new_tab(element)
+            for element in table:
+                webbrowser.open_new_tab(element)
 
 
 if __name__ == '__main__':

@@ -17,6 +17,3 @@ class ShowMore:
         self.tree.configure(yscrollcommand=self.scroll_hor.set)
 
         self.frame.mainloop()
-
-
-f = ShowMore()

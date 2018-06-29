@@ -18,7 +18,3 @@ class RSS:
             value_list.append([entry.updated, entry.author, entry.title])
 
         return value_list
-
-
-f = RSS('https://www.reddit.com/r/python/.rss')
-f.show_more_details()
