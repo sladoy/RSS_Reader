@@ -1,13 +1,12 @@
 from tkinter import Tk, Label, Button, ttk
+import sys
 
 
 def error_window():
     frame = Tk()
+    frame.title('Error Window')
     label = Label(frame, text="You didn't selected a position from the list")
     label.pack()
-
-    button = Button(frame, text='Ok', command=frame.destroy)
-    button.pack()
 
     frame.mainloop()
 
@@ -17,14 +16,14 @@ def start_error_window():
     label = Label(frame, text="You didn't input valid RSS link")
     label.pack()
 
-    button = Button(frame, text='Ok', command=frame.destroy)
-    button.pack()
 
     frame.mainloop()
 
 
 def show_more_window(values_to_tree):
     frame = Tk()
+    frame.grab_set()
+    frame.focus()
     frame.title('Show More')
     frame.bind('<Escape>', frame.destroy)
 
@@ -42,9 +41,6 @@ def show_more_window(values_to_tree):
 
     scroll_hor = ttk.Scrollbar(frame, orient='vertical', command=tree.yview)
     scroll_hor.pack(side='right', fill='y')
-
-    button = Button(frame, text='Ok', command=frame.destroy)
-    button.pack()
 
     tree.configure(yscrollcommand=scroll_hor.set)
 

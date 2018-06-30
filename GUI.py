@@ -2,8 +2,10 @@ import webbrowser
 from tkinter import Tk, Entry, Label, Button, ttk, TclError
 from Reader import RSS
 from windows import error_window, show_more_window, start_error_window
+import sys
 
 '''
+Dorobic bindy
 RSS: https://www.reddit.com/r/python/.rss
 '''
 
@@ -13,32 +15,34 @@ class MainGUI:
     def __init__(self, root):
         self.root = root
 
-        self.label = Label(root, text='Wprowadz link RSS')
-        self.label.pack()
-
-        self.entry = Entry(root)
-        self.entry.pack()
-
-        self.start_button = Button(root, text='Start', command=self.start)
-        self.start_button.pack(side='top')
-
-        self.open_in_browser_button = Button(root, text='Open', command=self.open_in_browser)
-        self.open_in_browser_button.pack(side='top')
-
-        self.show_more_button = Button(root, text='Show more', command=self.show_more)
-        self.show_more_button.pack()
-
         self.tree = ttk.Treeview(self.root, columns=[1, 2], height=10, show='headings')
-        self.tree.pack(side='left', fill='x')
+        self.tree.pack(side='left')
         self.tree.heading(1, text='Title')
         self.tree.heading(2, text='Link')
         self.tree.column(1, width=500)
         self.tree.column(2, width=500)
 
         self.scroll_hor = ttk.Scrollbar(self.root, orient='vertical', command=self.tree.yview)
-        self.scroll_hor.pack(side='right', fill='y')
+        self.scroll_hor.pack(side='left', fill='y')
 
         self.tree.configure(yscrollcommand=self.scroll_hor.set)
+
+        self.label = Label(root, text='Wprowadz link RSS')
+        self.label.pack()
+
+        self.entry = Entry(root)
+        self.entry.pack(padx=30, ipadx=50)
+
+        self.start_button = Button(root, text='Start', command=self.start)
+        self.start_button.pack(side='top', pady=10, ipady=10, ipadx=10)
+
+        self.open_in_browser_button = Button(root, text='Open', command=self.open_in_browser)
+        self.open_in_browser_button.pack(side='top', pady=10, ipady=10, ipadx=10)
+
+        self.show_more_button = Button(root, text='Show more', command=self.show_more)
+        self.show_more_button.pack(side='top', pady=10, ipady=10, ipadx=10)
+
+
         self.url = 0
         self.value_list = []
 
@@ -116,5 +120,5 @@ class MainGUI:
 if __name__ == '__main__':
     root = Tk()
     root.title('RSS Reader')
-    MainGUI(root)
+    instance = MainGUI(root)
     root.mainloop()
