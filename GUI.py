@@ -58,12 +58,15 @@ class MainGUI:
         else:
             picked_id_values = self.get_selection_values()
 
-            for values in picked_id_values:
-                picked_values.append(self.tree.item(values)['values'][0])
-
-            for x in all_values:
-                if x[0] in picked_values:
-                    values_to_tree.append([x[0], x[1], x[2]])
+            try:
+                for values in picked_id_values:
+                    picked_values.append(self.tree.item(values)['values'][0])
+            except TypeError:
+                return
+            else:
+                for x in all_values:
+                    if x[0] in picked_values:
+                        values_to_tree.append([x[0], x[1], x[2]])
 
             show_more_window(values_to_tree)
 
@@ -79,13 +82,15 @@ class MainGUI:
         else:
             for x, y in positions.items():
                 self.value_list.append([x, y])
-
-            for value in self.value_list:
-                self.tree.insert('', 'end', values=(value[0], value[1]))
+            try:
+                for value in self.value_list:
+                    self.tree.insert('', 'end', values=(value[0], value[1]))
+            except TclError:
+                return
 
     def open_in_browser(self):
         '''Opening selected positions in web browser'''
-        table = []
+        value_table = []
         values = self.get_selection_values()
         try:
             if len(values) == 0:
@@ -94,14 +99,18 @@ class MainGUI:
             return
         else:
             for value in values:
-                table.append(self.tree.item(value)['values'][1])
+                value_table.append(self.tree.item(value)['values'][1])
 
-            for element in table:
+            for element in value_table:
                 webbrowser.open_new_tab(element)
 
     def get_selection_values(self):
-        values = self.tree.selection()
-        return values
+        try:
+            values = self.tree.selection()
+        except TclError:
+            return
+        else:
+            return values
 
 
 if __name__ == '__main__':
