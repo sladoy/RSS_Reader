@@ -1,16 +1,15 @@
 import webbrowser
-from tkinter import Tk, Entry, Label, Button, ttk
-from show_more_window import ShowMore
+from tkinter import Tk, Entry, Label, Button, ttk, TclError
 from Reader import RSS
+from windows import error_window, show_more_window, start_error_window
 
 '''
-Wiecej informacji o danej pozycji, kiedy byla ostatnio aktualizowana, etc
-
 RSS: https://www.reddit.com/r/python/.rss
 '''
 
 
 class MainGUI:
+    '''Creating main window'''
     def __init__(self, root):
         self.root = root
 
@@ -21,10 +20,10 @@ class MainGUI:
         self.entry.pack()
 
         self.start_button = Button(root, text='Start', command=self.start)
-        self.start_button.pack()
+        self.start_button.pack(side='top')
 
         self.open_in_browser_button = Button(root, text='Open', command=self.open_in_browser)
-        self.open_in_browser_button.pack()
+        self.open_in_browser_button.pack(side='top')
 
         self.show_more_button = Button(root, text='Show more', command=self.show_more)
         self.show_more_button.pack()
@@ -43,34 +42,56 @@ class MainGUI:
         self.url = 0
         self.value_list = []
 
-    @staticmethod
-    def error_window():
-        frame = Tk()
-        frame.bind('<Escape>', frame.destroy)
-        label = Label(frame, text="You didn't selected a position from the list")
-        label.pack()
-        button = Button(frame, text='Ok', command=frame.destroy)
-        button.pack()
-
-        frame.mainloop()
-
     def show_more(self):
-        pass
+        '''Function will put values from selected positions intro tree from show_more_window'''
+        picked_values = []
+        values_to_tree = []
+
+        all_values = RSS(self.entry.get())
+        all_values = all_values.show_more_details()
+
+        try:
+            if len(all_values) == 0:
+                error_window()
+        except TclError:
+            return
+        else:
+            picked_id_values = self.get_selection_values()
+
+            for values in picked_id_values:
+                picked_values.append(self.tree.item(values)['values'][0])
+
+            for x in all_values:
+                if x[0] in picked_values:
+                    values_to_tree.append([x[0], x[1], x[2]])
+
+            show_more_window(values_to_tree)
 
     def start(self):
+        '''Reading values from RSS link and putting them to a tree'''
         self.url = RSS(self.entry.get())
         positions = self.url.show_title_and_link()
-        for x, y in positions.items():
-            self.value_list.append([x, y])
+        try:
+            if len(positions) == 0:
+                start_error_window()
+        except TclError:
+            return
+        else:
+            for x, y in positions.items():
+                self.value_list.append([x, y])
 
-        for value in self.value_list:
-            self.tree.insert('', 'end', values=(value[0], value[1]))
+            for value in self.value_list:
+                self.tree.insert('', 'end', values=(value[0], value[1]))
 
     def open_in_browser(self):
+        '''Opening selected positions in web browser'''
         table = []
-        values = self.tree.selection()
-        if len(values) == 0:
-            self.error_window()
+        values = self.get_selection_values()
+        try:
+            if len(values) == 0:
+                error_window()
+        except NameError:
+            return
         else:
             for value in values:
                 table.append(self.tree.item(value)['values'][1])
@@ -78,10 +99,13 @@ class MainGUI:
             for element in table:
                 webbrowser.open_new_tab(element)
 
+    def get_selection_values(self):
+        values = self.tree.selection()
+        return values
+
 
 if __name__ == '__main__':
     root = Tk()
-    root.bind('<Escape>', quit)
     root.title('RSS Reader')
     MainGUI(root)
     root.mainloop()
