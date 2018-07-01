@@ -2,16 +2,16 @@ import webbrowser
 from tkinter import Tk, Entry, Label, Button, ttk, TclError
 from Reader import RSS
 from windows import error_window, show_more_window, start_error_window
-import sys
 
 '''
-Dorobic bindy
 RSS: https://www.reddit.com/r/python/.rss
+
+Disclaimer: It works with reddit, and similar sites. Some of functions might not work with torrent sites, etc.
 '''
 
 
 class MainGUI:
-    '''Creating main window'''
+    ''' Creating main window '''
     def __init__(self, root):
         self.root = root
 
@@ -116,9 +116,13 @@ class MainGUI:
         else:
             return values
 
+    def destroy(self):
+        root.destroy()
+
 
 if __name__ == '__main__':
     root = Tk()
     root.title('RSS Reader')
-    instance = MainGUI(root)
+    MainGUI(root)
+    root.bind('<Escape>', MainGUI.destroy)
     root.mainloop()

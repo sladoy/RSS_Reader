@@ -16,7 +16,12 @@ class RSS:
     def show_more_details(self):
         '''Get values from RSS'''
         value_list = []
-        for entry in self.url.entries:
-            value_list.append([entry.title, entry.author, entry.updated])
+        try:
+            for entry in self.url.entries:
+                print(entry)
+                value_list.append([entry.title, entry.author, entry.updated])
+        except AttributeError:
+            print("T")
+        else:
 
-        return value_list
+            return value_list
