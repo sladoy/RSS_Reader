@@ -106,7 +106,7 @@ class MainGUI:
                 value_table.append(self.tree.item(value)['values'][1])
 
             for element in value_table:
-                webbrowser.open_new_tab(element)
+                webbrowser.open(element)
 
     def get_selection_values(self):
         try:
