@@ -18,10 +18,9 @@ class RSS:
         value_list = []
         try:
             for entry in self.url.entries:
-                print(entry)
                 value_list.append([entry.title, entry.author, entry.updated])
         except AttributeError:
-            print("T")
+            return
         else:
 
             return value_list
