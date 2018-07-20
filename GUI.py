@@ -42,7 +42,6 @@ class MainGUI:
         self.show_more_button = Button(root, text='Show more', command=self.show_more)
         self.show_more_button.pack(side='top', pady=10, ipady=10, ipadx=10)
 
-
         self.url = 0
         self.value_list = []
 
