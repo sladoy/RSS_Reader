@@ -6,7 +6,7 @@ class RSS:
         self.url = feedparser.parse(url)
 
     def show_title_and_link(self):
-        '''Get values from RSS'''
+        '''Get title and link from RSS'''
         value_dict = {}
         for entry in self.url.entries:
             value_dict[entry.title] = entry.link
